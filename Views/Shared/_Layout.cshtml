@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do - @ViewBag.Title  </title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("css", required: false)
+    <style>
+               body {
+                   margin: 0px;
+                   padding: 0px;
+                   font-size: 17px;
+                   font-size: .875rem;
+               }
+        .control-label{
+            font-weight:bolder !important;
+        }
+        a {
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+                   a:hover {
+                       text-decoration: none;
+                       color: chartreuse !important;
+                   }
+
+               .feather {
+                   width: 16px;
+                   height: 16px;
+                   vertical-align: text-bottom;
+               }
+
+               /*
+        * Sidebar
+        */
+
+               .sidebar {
+                   position: fixed;
+                   width: 180px;
+                   top: 0;
+                   bottom: 0;
+                   left: 0;
+                   background-color: black;
+                   z-index: 100; /* Behind the navbar */
+                   padding: 0;
+                   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+               }
+
+               .sidebar-sticky {
+                   position: -webkit-sticky;
+                   position: sticky;
+                   top: 5px; /* Height of navbar */
+                   height: calc(100vh - 5px);
+                   padding-top: .5rem;
+                   overflow-x: hidden;
+                   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+               }
+
+               .sidebar .nav-link {
+                   font-weight: 500;
+                   color: #333;
+               }
+
+                   .sidebar .nav-link .feather {
+                       margin-right: 4px;
+                       color: #999;
+                   }
+
+                   .sidebar .nav-link.active {
+                       color: #007bff;
+                   }
+
+                       .sidebar .nav-link:hover .feather,
+                       .sidebar .nav-link.active .feather {
+                           color: inherit;
+                       }
+
+               .sidebar-logo {
+                   position: relative;
+                   width: 100%;
+                   height: 150px;
+                   z-index: 1001;
+               }
+
+               .sidebar-heading {
+                   font-size: .75rem;
+                   text-transform: uppercase;
+               }
+
+               /*
+        * Navbar
+        */
+               .navbar-top {
+                   position: fixed;
+                   top: 0px;
+                   right: 0px;
+                   width: calc(100% - 180px);
+                   color: white;
+                   height: 50px;
+                   z-index: 100;
+                   text-align: right;
+                   text-decoration: none;
+                   background-color: black;
+                   padding: 10px 3px;
+               }
+
+               footer {
+                   position: fixed;
+                   bottom: 0px;
+                   right: 0px;
+                   width: calc(100% - 180px);
+                   color: white;
+                   height: 20px;
+                   z-index: 100;
+                   text-align: center;
+                   text-decoration: none;
+                   background-color: black;
+               }
+
+               .main_body {
+                   margin-left: 180px;
+               }
+
+               .nav-item {
+                   background-color: aliceblue;
+                   margin-top: 1px;
+               }
+
+               .cat-title {
+                   background-color: aquamarine;
+                   height: 25px;
+                   padding-left: 12px;
+                   font-size: 17px;
+                   padding-bottom: 3px;
+                   font-weight: 500;
+               }
+
+               .field-validation-error {
+                   color: red;
+                   position: absolute;
+                   margin-top: 35px;
+                   margin-left: 165px;
+               }
+
+               .task-title {
+                   text-decoration-style: none;
+                   font-size: 16px;
+               }
+
+               .form-signin {
+                   width: 100%;
+                   max-width: 350px;
+                   padding: 26px;
+                   margin: 20px auto;
+                   border: 2px solid;
+                   border-radius: 10px;
+                   
+               }
+
+               .userimage {
+                   border-radius: 50%;
+                   width: 35px;
+                   height: 35px;
+                   margin-right: 7px;
+               }
+
+               .profilelink {
+                   padding-right: 30px;
+                   margin: 0px;
+                   cursor: grab;
+               }
+
+               .profile {
+                   position: fixed;
+                   top: 50px;
+                   color: black;
+                   right: 0px;
+                   z-index: 102;
+                   text-align: center;
+               }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-sticky">
+            <img src="~/Image/element/logo.png" class="sidebar-logo" />
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index","Home")">Today</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index","Category")">My Category</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Monthly","Home")">Monthly</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Pending","Home")">Pending</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Create","Home")">+New</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <nav class="navbar-top">
+        @Html.Partial("_LoginPartial")
+    </nav>
+
+
+
+
+
+    <main role="main" class="col-md-10 mt-5 p-2 main_body">
+        @RenderBody()
+
+
+    </main>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Developed By: Mohammad Ismail</p>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+
+    <script>
+        $(document).ready(function () {
+            $(".profile").css('display', 'none');
+            $(".profilelink").click(function () {
+                $(".profile").slideToggle(300);
+            });
+
+        });
+
+        $(document).ready(function () {
+            $(".delbtn").click(function () {
+                var id = $(this).attr("id");
+                var con = confirm("Are you sure to delete?");
+                if (con) {
+                    location.href = "/Home/Delete?Id=" + id;
+                }
+                else {
+
+                }
+            });
+            $(".done").click(function () {
+                var id = $(this).attr("id");
+                var con = confirm("Wow! Have you done this task?");
+                if (con) {
+                    location.href = "/Home/Done?Id=" + id;
+                }
+                else {
+
+                }
+            });
+        })
+    </script>
+</body>
+</html>

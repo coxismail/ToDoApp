@@ -1,0 +1,214 @@
+﻿@model ToDoAPP.Models.UserDetails
+
+@{
+    ViewBag.Title = "My Profile";
+}
+
+
+@section css{
+    <style type="text/css">
+        .plogo {
+            position: absolute;
+            right: 217px;
+            top: 100px;
+        }
+    </style>
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+
+}
+
+<div class="card">
+    <div class="card-header bg-transparent">
+        
+            <span>About Me <a href="@Url.Action("Index","Manage")">Change Password</a><button id="editbtn" class="btn btn-outline-info float-right">&#9998;</button> </span>
+            
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new {role = "form", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-3" })
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-3" })
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Genders, htmlAttributes: new { @class = "control-label col-md-3" })
+                @Html.EnumDropDownListFor(model => model.Genders, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Genders, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Dob, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                @Html.EditorFor(model => model.Dob, new { htmlAttributes = new { @type = "text", @class = "form-control"} })
+                @Html.ValidationMessageFor(model => model.Dob, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label col-md-3" })
+                @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+            </div>
+
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                @Html.EnumDropDownListFor(model => model.Designation, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="form-group row">
+                @Html.Label(" ", htmlAttributes: new { @class = "control-label col-md-3" })
+                @Html.EditorFor(model => model.PresentAddress, new
+                {
+                    htmlAttributes = new
+                    {
+                        @class = "form-control",
+                        @onFocus = "geolocate()",
+                        @id = "autocomplete",
+                        @placeholder = "Enter your address"
+           }
+                })
+
+            </div>
+            <div id="address">
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Country, htmlAttributes: new { @class = "control-label col-md-3" })
+                    @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control field", @id = "country", @readonly="readonly" } })
+
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                    @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control field", @id = "administrative_area_level_1",@readonly="readonly" } })
+
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control field", @id = "locality", @readonly = "readonly" } })
+                </div>
+            </div>
+
+
+
+            <div class="form-group row">
+                @Html.LabelFor(model=>model.ImageUpload, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                @Html.TextBoxFor(model => model.ImageUpload, new { @type = "file", @class = "form-control" })
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-3" })
+                @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+            </div>
+
+       
+                <div class="col-md-8">
+                    <input type="submit" id="subbtn" value="Update" class="btn btn-outline-primary float-right" />
+                </div>
+            
+
+        }
+
+    </div>
+</div>
+<div class="plogo">
+    @{
+        var imagepath = "";
+        ViewBag.purl = Model.PhotosUrl;
+        if (ViewBag.purl != null)
+        {
+            imagepath = Url.Content(ViewBag.purl);
+            <img src="@imagepath" width="230" height="250" style="border-radius:10%;"/>
+        }
+    }
+
+</div>
+
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            $('.text-box').prop("readonly", true);
+            $('#subbtn').css('display', 'none');
+            $("#editbtn").click(function () {
+                $('.text-box').prop("readonly", false);
+                $('#subbtn').css('display', 'block');
+                var input = $('#Dob');
+                input.attr('type', 'date');
+            });
+        })
+    </script>
+    
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPGfoD2tYHDmtWHVeEtUqPEP7ubjpgxZg&libraries=places&callback=initAutocomplete" async defer></script>
+    <script>*@
+ <script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCg4rES-cHvkyowz2QjYSS1aQi1vBJaYYM&libraries=places&callback=initAutocomplete" async defer ></script>
+    <script>
+            var placeSearch, autocomplete;
+            var componentForm = {
+              //  street_number: 'short_name',
+              //  route: 'long_name',
+                locality: 'long_name',
+                administrative_area_level_1: 'short_name',
+                country: 'long_name',
+              //  postal_code: 'short_name'
+            };
+
+            function initAutocomplete() {
+                autocomplete = new google.maps.places.Autocomplete(
+                    (document.getElementById('autocomplete')), {
+                    types: ['geocode']
+                });
+                autocomplete.addListener('place_changed', fillInAddress);
+            }
+
+            function fillInAddress() {
+                var place = autocomplete.getPlace();
+                for (var component in componentForm) {
+                    document.getElementById(component).value = '';
+                    document.getElementById(component).disabled = false;
+                }
+                for (var i = 0; i < place.address_components.length; i++) {
+                    var addressType = place.address_components[i].types[0];
+                    if (componentForm[addressType]) {
+                        var val = place.address_components[i][componentForm[addressType]];
+                        document.getElementById(addressType).value = val;
+                    }
+                }
+            }
+
+            function geolocate() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var geolocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        var circle = new google.maps.Circle({
+                            center: geolocation,
+                            radius: position.coords.accuracy
+                        });
+                        autocomplete.setBounds(circle.getBounds());
+                    });
+                }
+            }
+    </script>
+
+
+
+}

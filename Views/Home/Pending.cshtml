@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ToDoAPP.Models.MyTask>
+@{
+    ViewBag.Title = "Pending";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            <h4 class="m-0 p-0 float-left" title="Flowing task is not completed yet"> Pending </h4>  <a href="@Url.Action("Create","Home")" type="button" style="border-radius:50%;" class="btn btn-primary float-right">+</a>
+        </div>
+    </div>
+    <div class="card-body">
+        @foreach (var item in Model)
+        {
+            <div class="card mt-1">
+                <div class="cat-title">
+                    @Html.DisplayFor(modelItem => item.Category.Name) On @item.Date.ToString("dd/MM/yyyy")
+                    <div class="button-group float-right">
+
+                        @if (item.IsPending == true)
+                        {
+                            <a href="@Url.Action("Edit","Home", new {Id = @item.Id })" title="Edit" class="mr-2 text-info">&crarr;</a>
+                            <a href="#" id="@item.Id" class="mr-2 text-info done"> &#10003;</a>
+                            <a href="#" id="@item.Id" class="mr-2 text-info delbtn" title="Delete">&times;</a>
+                        }
+                        else
+                        {
+                            <span>&cong;</span>
+                        }
+
+
+                    </div>
+                </div>
+                <div class="task-title pl-4">
+                    @Html.DisplayFor(modelItem => item.TaskName)
+                </div>
+                <pre class="pl-4">
+                    @item.Description
+                </pre>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ToDoAPP.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            <h4 class="m-0 p-0 float-left">My Category</h4>  <a href="@Url.Action("Create","Category")" type="button" style="border-radius:50%;" class="btn btn-primary float-right">+</a>
+        </div>
+    </div>
+    <div class="card-body">
+
+        @foreach (var item in Model)
+        {
+
+            <div class="alert alert-info text-primary mb-1">
+                @Html.DisplayFor(modelItem => item.Name)
+                <div class="btn-group float-right">
+                    <a href="@Url.Action("Edit","Category", new {id = @item.Id })" title="Edit"> &#9998;</a>
+                    &nbsp;&nbsp;
+                    <a href="#" class="delcbtn" id="@item.Id" title="Delete">&times;</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".delcbtn").click(function () {
+                var id = $(this).attr("id");
+                var con = confirm("Are you sure to delete?\n Note: it will delete task under this category");
+                if (con) {
+                    location.href = "/Category/Delete?Id=" + id;
+                }
+                else {
+
+                }
+            });
+
+        })
+    </script>
+}

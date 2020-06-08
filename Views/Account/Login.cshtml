@@ -1,0 +1,41 @@
+﻿@using ToDoAPP.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin bg-white", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <center>
+        <img class="mb-2 loginlogo" src="~/Image/element/logo.png" alt="" style="width:72px; height:72px;">
+    </center>
+    <h1 class="h3 mb-2 font-weight-normal text-center">Please sign in</h1>
+    if (ViewBag.Message != null)
+    {
+        <div class="alert alert-info text-danger text-center">@ViewBag.Message</div>
+
+    }
+    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "User Name" })
+    @Html.ValidationMessageFor(m => m.Email, null, new { @class = "text-danger" })
+    <br />
+
+    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+    @Html.ValidationMessageFor(m => m.Password, null, new { @class = "text-danger" })
+    <div class="checkbox mb-3">
+        <label>
+            @Html.CheckBoxFor(m => m.RememberMe)
+            @Html.LabelFor(m => m.RememberMe)
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <p class="mt-5 mb-3 text-muted text-center">© 2017-2018</p>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

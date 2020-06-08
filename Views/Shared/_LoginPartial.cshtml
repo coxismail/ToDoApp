@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNet.Identity
+@using ToDoAPP.Models
+
+
+
+
+@if (Request.IsAuthenticated)
+{
+    ApplicationDbContext db = new ApplicationDbContext();
+    var userid = User.Identity.GetUserId();
+    var profile = db.UserDetails.Where(s => s.Id == userid).FirstOrDefault();
+    var photourl = profile.PhotosUrl;
+    var url = Url.Content(photourl);
+    var fullName = profile.FirstName + " " + profile.LastName;
+
+    <a href="#" role="button" class="profilelink" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src="@url" class="userimage" alt="User Image" /> <span>@fullName</span></a>
+    <div class="profile card float-right">
+        <div class="card-body w-100">
+
+            <img src="@url" class="photolg" alt="" style="border-radius:50%; width:80px; height:80px;" />
+            <h4 class="text-center mx-0 my-0 px-0 py-0">@fullName</h4>
+            
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <a href="@Url.Action("MyProfile","Account")" class="btn btn-outline-primary">Profile</a>
+                @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm"}))
+                {
+                @Html.AntiForgeryToken()
+                <a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-outline-info">Log off</a>
+                }
+                
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <span>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</span>
+    <span>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</span>
+}
+
+
